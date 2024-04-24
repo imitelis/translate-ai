@@ -1,11 +1,8 @@
 # main.py
-import os
 import uvicorn
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
 # routers
 from routers import translate_router
 
@@ -15,7 +12,6 @@ app = FastAPI(
     description='Translate API project App',
     version='0.8.0',
 )
-
 
 # Configure middleware
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
@@ -31,6 +27,9 @@ app.add_middleware(
 # Define a hello route
 @app.get("/", tags=["hello"])
 def greet_client():
+    """
+    Greet the client with a friendly message
+    """
     return {"message": "Hello from FastAPI!"}
 
 
@@ -39,4 +38,5 @@ app.include_router(translate_router, prefix="/api", tags=["translate"])
 
 # Start app
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8000, reload=True) # ssl_keyfile="path/to/your/ssl/key.pem", ssl_certfile="path/to/your/ssl/cert.pem"  
+    uvicorn.run('main:app', host='0.0.0.0', port=8000,
+                reload=True)  # ssl_keyfile="path/to/your/ssl/key.pem", ssl_certfile="path/to/your/ssl/cert.pem"
