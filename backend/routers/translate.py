@@ -1,30 +1,31 @@
 # routers/users.py
-from fastapi import APIRouter, HTTPException, Depends, Response, status
-
-# models, bases
+from fastapi import APIRouter, Response
+import re
+from services import Deeplia
+from services import GoogleGenia
+# models, basesx
 # from typing import List
 # from models import User
 # from bases import UserBase, UserResponse, EditUserBase, EditUserPasswordBase
 
-# EditUserActiveBase, EditPasswordBase, 
+# EditUserActiveBase, EditPasswordBase,
 
 router = APIRouter()
-
-
+deepl_service = Deeplia()
+google_service = GoogleGenia()
 # Basic POST user
-@router.post("/translate")
-async def translate_text():
+@router.get("/translate/deepl")
+async def translate_text_deepl(text: str, sl: str = 'es', tl: str = 'en-us'):
     """
-        print(user.national_id)
-
-    db_user = await User.filter(national_id=user.national_id).first()
-
-    if db_user:
-        raise HTTPException(status_code=409, detail="National Id already exists")
-    
-    new_user = User(national_id=user.national_id, full_name=user.full_name, email=user.email)
-    await new_user.set_password(user.password)
-    await new_user.save()
+    Translate text from one language to another
     """
-    
-    return {"translate": "text"}
+    response = deepl_service.translate_text(text, source_language=sl, target_language=tl)
+    return response
+@router.get("/translate/geminia")
+async def translate_text_geminia(text: str, tl: str = 'en-us'):
+    """
+    Translate text from one language to another
+    """
+    response = google_service.translate_text(text, target_language=tl)
+    cleaned_response = re.sub(r'[\\"]', '', response)
+    return cleaned_response
