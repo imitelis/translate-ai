@@ -1,8 +1,8 @@
 # routers/users.py
 from fastapi import APIRouter, Response
 import re
-from services import Deeplia
-from services import GoogleGenia
+from backend.services import Deeplia
+from backend.services import GoogleGenia
 # models, basesx
 # from typing import List
 # from models import User
