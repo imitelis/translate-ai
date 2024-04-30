@@ -4,8 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 # routers
-from backend.routers import translate_router
-
+from routers import translate_router
 # Initial params
 app = FastAPI(
     title='Translate API',

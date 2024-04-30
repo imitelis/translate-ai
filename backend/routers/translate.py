@@ -1,14 +1,7 @@
-# routers/users.py
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 import re
-from backend.services import Deeplia
-from backend.services import GoogleGenia
-# models, basesx
-# from typing import List
-# from models import User
-# from bases import UserBase, UserResponse, EditUserBase, EditUserPasswordBase
-
-# EditUserActiveBase, EditPasswordBase,
+from services import Deeplia
+from services import GoogleGenia
 
 router = APIRouter()
 deepl_service = Deeplia()
