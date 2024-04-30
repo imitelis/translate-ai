@@ -1,2 +1,5 @@
+# cache
+seq2seq/__pycache__/
+
+# venv
 venv/
-seq2seq/__pycache__

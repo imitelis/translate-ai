@@ -18,7 +18,7 @@ def evaluate(encoder, decoder, sentence, input_lang, output_lang):
         decoded_words = []
         for idx in decoded_ids:
             if idx.item() == EOS_token:
-                decoded_words.append('<EOS>')
+                # decoded_words.append('<EOS>')
                 break
             decoded_words.append(output_lang.index2word[idx.item()])
     return decoded_words, decoder_attn

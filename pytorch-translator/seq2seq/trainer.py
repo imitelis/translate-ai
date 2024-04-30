@@ -4,19 +4,20 @@ import time
 import torch
 import torch.nn as nn
 from torch import optim
-from encoder import EncoderRNN
-from attention_decoder import AttnDecoderRNN
-
-from helper import timeSince, showPlot
 
 import matplotlib.pyplot as plt
-plt.switch_backend('agg')
 import matplotlib.ticker as ticker
-
-from settings import device
 
 from data_preparing import get_dataloader
 from data_evaluator import evaluate, evaluateRandomly
+
+from encoder_rnn import EncoderRNN
+from attndecoder_rnn import AttnDecoderRNN
+
+from helper import timeSince, showPlot
+from settings import device, hidden_size, batch_size, base_lang, target_lang 
+
+plt.switch_backend('agg')
 
 # Training the model
 def train_epoch(dataloader, encoder, decoder, encoder_optimizer,
@@ -75,9 +76,6 @@ def train(train_dataloader, encoder, decoder, n_epochs, learning_rate=0.001,
     showPlot(plot_losses)
 
 # Training and evalution
-hidden_size = 128
-batch_size = 32
-
 input_lang, output_lang, train_dataloader = get_dataloader(batch_size)
 
 encoder = EncoderRNN(input_lang.n_words, hidden_size).to(device)
@@ -90,8 +88,8 @@ decoder.eval()
 evaluateRandomly(encoder, decoder)
 
 # Saving
-encoder_path = 'encoder.pth'
-decoder_path = 'decoder.pth'
+encoder_path = f'{base_lang}-to-{target_lang}-encoder.pth'
+decoder_path = f'{base_lang}-to-{target_lang}-decoder.pth'
 
 # Save the state dictionaries of the encoder and decoder
 torch.save(encoder.state_dict(), encoder_path)
@@ -120,7 +118,6 @@ def evaluateAndShowAttention(input_sentence):
     print('input =', input_sentence)
     print('output =', ' '.join(output_words))
     showAttention(input_sentence, output_words, attentions[0, :len(output_words), :])
-
 
 evaluateAndShowAttention('il n est pas aussi grand que son pere')
 evaluateAndShowAttention('je suis trop fatigue pour conduire')

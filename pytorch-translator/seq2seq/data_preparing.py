@@ -3,15 +3,18 @@ import random
 import numpy as np
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler
 
-from settings import EOS_token, MAX_LENGTH, device
+from settings import EOS_token, UNK_token, MAX_LENGTH, base_lang, target_lang, device
 from data_filtering import prepareData
 
-input_lang, output_lang, pairs = prepareData('eng', 'fra', True)
-print(random.choice(pairs))
+input_lang, output_lang, pairs = prepareData(base_lang, target_lang, True)
+# print(random.choice(pairs))
 
 # Preparing training data
 def indexesFromSentence(lang, sentence):
-    return [lang.word2index[word] for word in sentence.split(' ')]
+    # return [lang.word2index[word] for word in sentence.split(' ')]
+    # return 0
+    # return [lang.word2index.get(word, UNK_token) for word in sentence.split(' ')]
+    return [lang.word2index[word] for word in sentence.split(' ') if word in lang.word2index]
 
 def tensorFromSentence(lang, sentence):
     indexes = indexesFromSentence(lang, sentence)
@@ -24,8 +27,6 @@ def tensorsFromPair(pair):
     return (input_tensor, target_tensor)
 
 def get_dataloader(batch_size):
-    input_lang, output_lang, pairs = prepareData('eng', 'fra', True)
-
     n = len(pairs)
     input_ids = np.zeros((n, MAX_LENGTH), dtype=np.int32)
     target_ids = np.zeros((n, MAX_LENGTH), dtype=np.int32)
