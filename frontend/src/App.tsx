@@ -5,8 +5,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 // language
 import { detectLanguage } from "./i18n";
 
-const NotFound = lazy(() => import("./views/NotFound"));
-const Translate = lazy(() => import("./views/Translate"));
+const NotFound = lazy(() => import("./components/NotFound"));
+const Translate = lazy(() => import("./components/Translate"));
 
 function App() {
   const [, setLanguage] = useState("en");
