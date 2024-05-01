@@ -1,1 +1,12 @@
+# cache
+__pycache__/
+routers/__pycache__/
+services/__pycache__/
+services/pytorch_data/__pycache__/
+test/__pycache__/
+
+# venv
 venv/
+
+# secrets
+.env
