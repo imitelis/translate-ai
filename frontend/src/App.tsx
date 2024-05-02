@@ -2,6 +2,9 @@ import { languages } from "./i18n";
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
+// components
+import NavBar from "./components/NavBar"
+
 // language
 import { detectLanguage } from "./i18n";
 
@@ -9,7 +12,7 @@ const NotFound = lazy(() => import("./components/NotFound"));
 const Translate = lazy(() => import("./components/Translate"));
 
 function App() {
-  const [, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("en");
 
   const location = useLocation();
   const path = location.pathname;
@@ -21,6 +24,7 @@ function App() {
 
   return (
     <>
+    <NavBar path={path} language={language}  />
       <Routes>
         {languages.map((lang) => [
           <Route
@@ -49,7 +53,7 @@ function App() {
                 <NotFound />
               </Suspense>
             }
-          />
+          />,
         ])}
       </Routes>
     </>

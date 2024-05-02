@@ -1,14 +1,13 @@
-import { useTranslation } from "react-i18next";
-import Nav from "./nav";
+// import { useTranslation } from "react-i18next";
+// import Nav from "./Nav";
 import InputTranslate from "./ExecuteTranslate";
+
 const Translate = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   return (
     <>
-      <Nav /> {Nav}
-      <InputTranslate /> {InputTranslate}
-      {t}
+      <InputTranslate />
     </>
   );
 };
