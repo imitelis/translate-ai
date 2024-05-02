@@ -3,13 +3,13 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 // components
-import NavBar from "./components/NavBar"
+import NavigationBar from "./components/NavigationBar";
 
 // language
 import { detectLanguage } from "./i18n";
 
-const NotFound = lazy(() => import("./components/NotFound"));
-const Translate = lazy(() => import("./components/Translate"));
+const NotFound = lazy(() => import("./views/NotFound"));
+const Translate = lazy(() => import("./views/Translate"));
 
 function App() {
   const [language, setLanguage] = useState("en");
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-    <NavBar path={path} language={language}  />
+      <NavigationBar path={path} language={language} />
       <Routes>
         {languages.map((lang) => [
           <Route

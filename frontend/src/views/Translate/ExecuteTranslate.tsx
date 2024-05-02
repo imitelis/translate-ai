@@ -71,6 +71,6 @@ const ExecuteTranslate = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ExecuteTranslate;

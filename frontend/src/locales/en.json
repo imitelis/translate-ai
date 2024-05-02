@@ -1,3 +1,8 @@
 {
-  "welcome_message": "Welcome to Translate AI"
+  "welcome_message": "Welcome to Translate AI",
+  "translate_ai": "Translate AI",
+  "about": "About",
+
+  "error_not_found": "Error page not found",
+  "sorry_not_found": "Sorry but the page that you are looking for doesn't exists"
 }

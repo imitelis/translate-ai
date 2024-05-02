@@ -53,18 +53,4 @@ export const detectLanguage = ({ path }: LanguageDetectionInput) => {
   return language;
 };
 
-export interface LanguageLocationInput {
-  path: string;
-  location: string;
-}
-
-export const isLocated = ({ path, location }: LanguageLocationInput) => {
-  return (
-    path === `${location}` ||
-    path === `${location}/` ||
-    languages.some((lang) => path === `${location}/${lang}`) ||
-    languages.some((lang) => path === `${location}/${lang}/`)
-  );
-};
-
 export default i18n;

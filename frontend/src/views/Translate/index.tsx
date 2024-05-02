@@ -1,5 +1,4 @@
 // import { useTranslation } from "react-i18next";
-// import Nav from "./Nav";
 import InputTranslate from "./ExecuteTranslate";
 
 const Translate = () => {

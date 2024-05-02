@@ -1,3 +1,8 @@
 {
-  "welcome_message": "Bienvenido a Traduce AI"
+  "welcome_message": "Bienvenido a Traduce IA",
+  "translate_ai": "Traduce IA",
+  "about": "Acerca de",
+
+  "error_not_found": "Error página no encontrada",
+  "sorry_not_found": "Lo sentimos pero la página que esta buscando no esta existe"
 }

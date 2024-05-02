@@ -1,23 +1,27 @@
 import { useState } from "react";
-import { Link as ScrollLink } from "react-scroll";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import { Link as ScrollLink } from "react-scroll";
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 import logo from "../assets/Logo.png";
 
-const NavBar = ({ path, language }) => {
-  const [nav, setNav] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+interface NavigationBarProps {
+  path: string;
+  language: string;
+}
+
+const NavigationBar = ({ path, language }: NavigationBarProps) => {
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  // const [selectedOption, setSelectedOption] = useState('');
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const handleNav = () => {
-    setNav(!nav);
+  const handleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
   };
-  
-  const handleSelectLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLanguage = event.target.value
+
+  const handleSelectLanguage = (newLanguage: string) => {
     if (newLanguage != language) {
       // console.log('new lang', newLanguage)
       const newPath = path.includes(language)
@@ -30,10 +34,9 @@ const NavBar = ({ path, language }) => {
     }
   };
 
-
   return (
     <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full fixed top-0 left-0 text-white shadow-lg flex justify-between items-center h-24 ">
-      <a href="/" className="flex items-center justify-center">
+      <Link to="/" className="flex items-center justify-center">
         <img
           className="ml-10 mx-auto rounded-full py-8 md:py-0"
           src={logo}
@@ -41,14 +44,17 @@ const NavBar = ({ path, language }) => {
           alt="Logo"
         />
         <h1 className="ml-5 uppercase font-black text-lg lg:text-xl tracking-wide">
-          TRANSLATE AI
+          {t("translate_ai")}
         </h1>
-      </a>
+      </Link>
 
       {/* Menú para dispositivos móviles */}
       <div className="md:hidden mr-10">
-        <div onClick={handleNav} className="text-gray-300 cursor-pointer">
-          {nav ? (
+        <div
+          onClick={handleMobileMenu}
+          className="text-gray-300 cursor-pointer"
+        >
+          {showMobileMenu ? (
             <AiOutlineClose
               size={30}
               className="transition-transform duration-300 transform hover:scale-110"
@@ -62,7 +68,7 @@ const NavBar = ({ path, language }) => {
         </div>
         {/* Menú desplegable */}
         <div
-          className={`absolute top-24 right-0 w-full bg-blue-500 text-white py-4 ${nav ? "" : "hidden"}`}
+          className={`absolute top-24 right-0 w-full bg-blue-500 text-white py-4 ${showMobileMenu ? "" : "hidden"}`}
         >
           <ul className="flex flex-col items-center gap-4">
             <li>
@@ -72,11 +78,25 @@ const NavBar = ({ path, language }) => {
                 smooth={true}
                 offset={50}
                 duration={500}
-                onClick={handleNav}
+                onClick={handleMobileMenu}
                 className="hover:text-green-500 transition-colors duration-300"
               >
-                About
+                <Link to={`about/${language}`}>{t("about")}</Link>
               </ScrollLink>
+            </li>
+            <li>
+              <select
+                onChange={(e) => handleSelectLanguage(e.target.value)}
+                value={language}
+                className="text-2xl lg:text-xl font-medium p-2.5 lg:p-2 bg-indigo-400 hover:bg-indigo-500 transition-colors duration-300 text-white shadow-md rounded-lg"
+              >
+                <option value="en" className="text-sm">
+                  English
+                </option>
+                <option value="es" className="text-sm">
+                  Espanol
+                </option>
+              </select>
             </li>
           </ul>
         </div>
@@ -94,19 +114,27 @@ const NavBar = ({ path, language }) => {
               duration={500}
               className="hover:text-green-500 transition-colors duration-300"
             >
-              About
+              <Link to={`about/${language}`}>{t("about")}</Link>
             </ScrollLink>
           </li>
           <li>
-          <select value={selectedOption} onChange={handleSelectLanguage}>
-        <option value="es">Espanol</option>
-        <option value="en">English</option>
-      </select>
-            </li>
+            <select
+              onChange={(e) => handleSelectLanguage(e.target.value)}
+              value={language}
+              className="text-2xl lg:text-xl font-medium p-2.5 lg:p-2 bg-indigo-400 hover:bg-indigo-500 transition-colors duration-300 text-white shadow-md rounded-lg"
+            >
+              <option value="en" className="text-sm">
+                English
+              </option>
+              <option value="es" className="text-sm">
+                Espanol
+              </option>
+            </select>
+          </li>
         </ul>
       </div>
     </div>
   );
 };
 
-export default NavBar;
+export default NavigationBar;
