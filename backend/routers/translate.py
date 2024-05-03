@@ -3,10 +3,17 @@ import re
 from services import Deeplia
 from services import GoogleGenia
 from services.json_translator import translate
+from services import extract_score
+from typing import List
+from pydantic import BaseModel
 
 router = APIRouter()
 deepl_service = Deeplia()
 google_service = GoogleGenia()
+
+
+class TranslationsText(BaseModel):
+    translations: List[str]
 
 # Basic POST translates
 @router.post("/translate/json")
@@ -33,3 +40,12 @@ async def translate_text_geminia(text: str, tl: str = 'en-us'):
     response = google_service.translate_text(text, target_language=tl)
     cleaned_response = re.sub(r'[\\"]', '', response)
     return cleaned_response
+
+# Basic POST sentiment analysis
+@router.post("/sentiment")
+async def sentiment(translations: TranslationsText):
+    """
+    Extract sentiment score from text
+    """
+    translations_history = translations.dict()['translations']
+    return extract_score(translations_history)
