@@ -1,5 +1,5 @@
 # Use the official Node image as a base
-FROM node:18.13.0-slim AS base
+FROM node:18.13.0-slim AS web
 
 # Add a /app work directory
 WORKDIR /app

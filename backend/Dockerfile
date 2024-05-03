@@ -1,5 +1,5 @@
 # Use the official Python image as a base
-FROM python:3.10
+FROM python:3.10 AS base
 
 # Create workdir
 RUN mkdir -p /code
@@ -9,6 +9,10 @@ WORKDIR /code
 
 # Copy the current directory contents into the container at /code
 COPY . /code
+
+ENV VIRTUAL_ENV=/code/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Upgrade pip
 RUN pip install --no-cache-dir --upgrade pip
