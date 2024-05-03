@@ -1,0 +1,21 @@
+services:
+  api:
+    build:
+      context: ./backend
+      target: base
+    container_name: fastapi-application
+    env_file:
+        - ./backend/.env
+    ports:
+      - '8000:8000'
+    restart: "no"
+  web:
+    build:
+      context: ./frontend
+      target: web
+    container_name: react-application
+    depends_on:
+      - api
+    ports:
+      - '3000:3000'
+    restart: "no"

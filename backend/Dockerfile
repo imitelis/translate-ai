@@ -20,9 +20,9 @@ RUN pip install --no-cache-dir --upgrade pip
 # Install project dependencies
 RUN pip install uvicorn
 RUN pip install -r reqs.txt
-
+RUN [ "python3", "-c", "import nltk; nltk.download('vader_lexicon', download_dir='/usr/local/share/nltk_data')" ]
 # Expose a port
 EXPOSE 8000
 
 # Run our FastAPI server using uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "localhost", "--port", "8000"]
