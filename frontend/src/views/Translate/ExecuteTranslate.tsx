@@ -1,76 +1,138 @@
-import { useState, ChangeEvent } from "react";
-import { Textarea } from "@material-tailwind/react";
+import { useState } from 'react';
+import { useStore } from '../../hooks/useStore';
+import { Container, Row, Col, Button, Stack } from "react-bootstrap";
+import { AUTO_LANGUAGE, homologateLanguageByPlatform } from '../../constants';
+import { ArrowsIcon } from '../../components/Icons';
+import { LanguageSelector } from '../../components/LanguageSelector';
+import { SectionType } from '../../types.d';
+import { TextArea } from '../../components/TextArea';
+import TranslationSelector from "../../components/TranslateSelector";
+import axios from 'axios';
 
-const ExecuteTranslate = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [translationValue, setTranslationValue] = useState("");
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../index.css';
 
-  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-    // Simulamos la traducción copiando el texto ingresado
-    setTranslationValue(newValue);
-  };
 
-  const calculateTextareaHeight = (value: string) => {
-    const maxHeight = 250; // Altura máxima deseada
-    const lines = value.split("\n").length;
-    return Math.min(lines * 20, maxHeight);
-  };
+function InputTranslate() {
+  const {
+    loading,
+    fromLanguage,
+    toLanguage,
+    interchangeLanguages,
+    setToLanguage,
+    setFromLanguage,
+    fromText,
+    result,
+    setFromText,
+    setResult
+  } = useStore();
 
-  const inputLength = inputValue.length;
-  const translationLength = translationValue.length;
+  const [selectedEndpoint, setSelectedEndpoint] = useState("json");
 
+  const translateText = async () => {
+    try {
+      let url;
+      let requestBody: { text: string, sl?: string, tl?: string }
+
+      switch (selectedEndpoint) {
+        case "json":
+          url = 'http://127.0.0.1:8000/api/translate/json';
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: toLanguage
+          };
+          break;
+        case "deepl":
+          url = 'http://127.0.0.1:8000/api/translate/deepl';
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: homologateLanguage(selectedEndpoint, 'tl', toLanguage)
+          };
+          break;
+        case "geminia":
+          url = 'http://127.0.0.1:8000/api/translate/geminia';
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: homologateLanguage(selectedEndpoint, 'tl', toLanguage)
+          };
+          break;
+        default:
+          throw new Error("Invalid endpoint");
+      }
+
+      const response = await axios.post(url, requestBody);
+
+      // Actualiza el resultado con la traducción recibida
+      setResult(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  function homologateLanguage(platform: 'json' | 'deepl' | 'geminia', direction: 'tl' | 'sl', language: 'en' | 'es') {
+
+    if (homologateLanguageByPlatform[platform] && homologateLanguageByPlatform[platform][direction] && homologateLanguageByPlatform[platform][direction][language]) {
+      return homologateLanguageByPlatform[platform][direction][language] || language;
+
+    }
+    else {
+      return language
+    }
+
+  }
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col md:flex-row md:w-1/2">
-        <div className="w-full md:w-1/2 mb-4 md:mb-0">
-          <div className="relative">
-            <Textarea
-              color="teal"
-              label="Ingresa Texto"
-              className="rounded-lg px-4 py-2 border border-gray-300 w-full focus:outline-none focus:border-teal-500"
-              value={inputValue}
-              onChange={handleInputChange}
-              style={{ height: `${calculateTextareaHeight(inputValue)}px` }}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            />
-            {inputLength > 0 && (
-              <span
-                className={`absolute right-5 bottom-3 ${inputLength >= 5000 ? "text-red-500 text-sm" : "text-gray-400 text-sm"}`}
-              >
-                {inputLength}/5000
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="w-full md:w-1/2 ml-0 md:ml-4">
-          <div className="relative">
-            <Textarea
-              color="teal"
-              label="Traducción"
-              className="rounded-lg px-4 py-2 border border-gray-300 w-full focus:outline-none focus:border-teal-500"
-              value={translationValue}
-              onChange={() => {}} // No permitimos cambios directos en la traducción
-              style={{
-                height: `${calculateTextareaHeight(translationValue)}px`,
-              }}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-            />
-            {translationLength > 0 && (
-              <span
-                className={`absolute right-5 bottom-3 ${translationLength >= 5000 ? "text-red-500 text-sm" : "text-gray-400 text-sm"}`}
-              >
-                {translationLength}/5000
-              </span>
-            )}
-          </div>
-        </div>
+    <Container fluid className="bg-img d-flex justify-content-center align-items-center vh-100">
+      <div className="container">
+        <h1 className="text-center mb-4 text-light"> </h1>
+        <Row>
+          <Col>
+            <Stack gap={2}>
+              <LanguageSelector
+                type={SectionType.From}
+                value={fromLanguage}
+                onChange={setFromLanguage}
+              />
+              <TextArea
+                type={SectionType.From}
+                value={fromText}
+                onChange={setFromText}
+                className="form-control bg-light text-dark border-0 rounded"
+              />
+            </Stack>
+          </Col>
+          <Col xs='auto'>
+            <Button variant='link' disabled={fromLanguage === AUTO_LANGUAGE} onClick={interchangeLanguages} className="text-light">
+              <ArrowsIcon />
+            </Button>
+          </Col>
+          <Col>
+            <Stack gap={2}>
+              <LanguageSelector
+                type={SectionType.To}
+                value={toLanguage}
+                onChange={setToLanguage}
+              />
+              <TextArea
+                loading={loading}
+                type={SectionType.To}
+                value={result}
+                onChange={setResult}
+                className="form-control bg-light text-dark border-0 rounded"
+              />
+            </Stack>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col className="text-center">
+            <TranslationSelector onSelect={setSelectedEndpoint} />
+            <Button variant="primary" onClick={translateText}>Translate</Button>
+          </Col>
+        </Row>
       </div>
-    </div>
+    </Container>
   );
-};
+}
 
-export default ExecuteTranslate;
+export default InputTranslate;
