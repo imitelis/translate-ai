@@ -15,6 +15,12 @@ google_service = GoogleGenia()
 class TranslationsText(BaseModel):
     translations: List[str]
 
+
+class Params(BaseModel):
+    text: str
+    sl: str
+    tl: str
+
 # Basic POST translates
 @router.post("/translate/json")
 async def translate_text_json(text: str, sl: str = 'es', tl: str = 'en'):
@@ -25,18 +31,23 @@ async def translate_text_json(text: str, sl: str = 'es', tl: str = 'en'):
     return response
 
 @router.post("/translate/deepl")
-async def translate_text_deepl(text: str, sl: str = 'es', tl: str = 'en-us'):
+async def translate_text_deepl(params: Params):
     """
     Translate text from one language to another
     """
+    text = params.text
+    sl = params.sl
+    tl = params.tl
     response = deepl_service.translate_text(text, source_language=sl, target_language=tl)
     return response
 
 @router.post("/translate/geminia")
-async def translate_text_geminia(text: str, tl: str = 'en-us'):
+async def translate_text_geminia(params: Params):
     """
     Translate text from one language to another
     """
+    text = params.text
+    tl = params.tl
     response = google_service.translate_text(text, target_language=tl)
     cleaned_response = re.sub(r'[\\"]', '', response)
     return cleaned_response
