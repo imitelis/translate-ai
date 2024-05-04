@@ -5,7 +5,7 @@ client = TestClient(app)
 
 
 def test_translate_routes():
-    response = client.get("/    ")
+    response = client.get("/api/translate/deepl?text=Hola%20mundo")
     assert response.status_code == 200
     assert response.json() == "Hello world"
 
