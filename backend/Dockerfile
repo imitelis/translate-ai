@@ -2,13 +2,13 @@
 FROM python:3.10 AS base
 
 # Create workdir
-RUN mkdir -p /code
+RUN mkdir -p /backend
 
 # Set the working directory to /code
-WORKDIR /code
+WORKDIR /backend
 
 # Copy the current directory contents into the container at /code
-COPY . /code
+COPY . /backend
 
 ENV VIRTUAL_ENV=/code/venv
 RUN python3 -m venv $VIRTUAL_ENV
@@ -25,4 +25,4 @@ RUN [ "python3", "-c", "import nltk; nltk.download('vader_lexicon', download_dir
 EXPOSE 8000
 
 # Run our FastAPI server using uvicorn
-CMD ["uvicorn", "main:app", "--host", "localhost", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
