@@ -1,44 +1,49 @@
-import  { useState } from 'react';
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { Button } from "@material-tailwind/react";
 
-// Define el tipo de función para onSelect
 type SelectHandler = (endpoint: string) => void;
 
 interface TranslationSelectorProps {
-  onSelect: SelectHandler; // Especifica el tipo de función para onSelect
+    onSelect: SelectHandler;
 }
 
 function TranslationSelector({ onSelect }: TranslationSelectorProps) {
-  const [selectedOption, setSelectedOption] = useState<string>("");
 
-  const handleSelect = (endpoint: string) => {
-    setSelectedOption(endpoint);
-    onSelect(endpoint);
-  };
+    const handleSelect = (endpoint: string) => {
+        onSelect(endpoint);
+    };
 
-  return (
-    <ButtonGroup>
-      <Button
-        onClick={() => handleSelect("json")}
-        variant={selectedOption === "json" ? "primary" : "secondary"} // Resalta si es la opción seleccionada
-      >
-        Model
-      </Button>
-      <Button
-        onClick={() => handleSelect("deepl")}
-        variant={selectedOption === "deepl" ? "primary" : "secondary"} // Resalta si es la opción seleccionada
-      >
-        DeepL
-      </Button>
-      <Button
-        onClick={() => handleSelect("geminia")}
-        variant={selectedOption === "geminia" ? "primary" : "secondary"} // Resalta si es la opción seleccionada
-      >
-        Geminia
-      </Button>
-    </ButtonGroup>
-  );
+    return (
+        <div className="flex justify-center gap-2">
+            <Button color="purple"
+                onClick={() => handleSelect("json")}
+                ripple={true}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+            >
+                Model
+            </Button>
+            <Button color="green"
+                onClick={() => handleSelect("deepl")}
+                ripple={true}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                
+            >
+                DeepL
+            </Button>
+            <Button color= "blue-gray"
+                onClick={() => handleSelect("geminia")}
+                ripple={true}
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+            >
+                Geminia
+            </Button>
+        </div>
+    );
 }
 
 export default TranslationSelector;
-
