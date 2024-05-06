@@ -30,7 +30,7 @@ function InputTranslate() {
 
       switch (selectedEndpoint) {
         case "json":
-          url = 'http://127.0.0.1:8000/api/translate/json';
+          url = 'http://localhost:8000/api/translate/json';
           requestBody = {
             text: fromText,
             sl: fromLanguage,
@@ -38,7 +38,7 @@ function InputTranslate() {
           };
           break;
         case "deepl":
-          url = 'http://127.0.0.1:8000/api/translate/deepl';
+          url = 'http://localhost:8000/api/translate/deepl';
           requestBody = {
             text: fromText,
             sl: fromLanguage,
@@ -46,7 +46,7 @@ function InputTranslate() {
           };
           break;
         case "geminia":
-          url = 'http://127.0.0.1:8000/api/translate/geminia';
+          url = 'http://localhost:8000/api/translate/geminia';
           requestBody = {
             text: fromText,
             sl: fromLanguage,

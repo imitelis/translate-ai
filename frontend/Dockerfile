@@ -1,8 +1,10 @@
 # Use the official Node image as a base
 FROM node:18.13.0-slim AS web
 
+RUN mkdir -p /frontend
+
 # Add a /app work directory
-WORKDIR /app
+WORKDIR /frontend
 
 # Copy package.json there
 COPY package.json .
@@ -11,7 +13,7 @@ COPY package.json .
 RUN npm install
 
 # Copy app files
-COPY . .
+COPY . /frontend
 
 # Build prod app
 # RUN npm run build
