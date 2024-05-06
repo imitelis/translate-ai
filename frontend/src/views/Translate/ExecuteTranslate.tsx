@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { useStore } from '../../hooks/useStore';
-import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 import { AUTO_LANGUAGE, homologateLanguageByPlatform } from '../../constants';
 import { ArrowsIcon } from '../../components/Icons';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { SectionType } from '../../types.d';
-import { TextArea } from '../../components/TextArea';
+import { TextAreaComponent } from '../../components/TextArea';
 import TranslationSelector from "../../components/TranslateSelector";
 import axios from 'axios';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../index.css';
-
-
 function InputTranslate() {
   const {
-    loading,
     fromLanguage,
     toLanguage,
     interchangeLanguages,
@@ -71,6 +65,7 @@ function InputTranslate() {
       console.error('Error:', error);
     }
   }
+
   function homologateLanguage(platform: 'json' | 'deepl' | 'geminia', direction: 'tl' | 'sl', language: 'en' | 'es') {
 
     if (homologateLanguageByPlatform[platform] && homologateLanguageByPlatform[platform][direction] && homologateLanguageByPlatform[platform][direction][language]) {
@@ -82,56 +77,64 @@ function InputTranslate() {
     }
 
   }
+
   return (
-    <Container fluid className="bg-img d-flex justify-content-center align-items-center vh-100">
-      <div className="container">
+    <div className="bg-img flex justify-center items-center min-h-screen">
+      <div className="container mx-auto px-4">
         <h1 className="text-center mb-4 text-light"> </h1>
-        <Row>
-          <Col>
-            <Stack gap={2}>
-              <LanguageSelector
-                type={SectionType.From}
-                value={fromLanguage}
-                onChange={setFromLanguage}
-              />
-              <TextArea
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div>
+            <LanguageSelector
+              type={SectionType.From}
+              value={fromLanguage}
+              onChange={setFromLanguage}
+            />
+            <div className='mt-3'>
+              <TextAreaComponent
                 type={SectionType.From}
                 value={fromText}
                 onChange={setFromText}
-                className="form-control bg-light text-dark border-0 rounded"
               />
-            </Stack>
-          </Col>
-          <Col xs='auto'>
-            <Button variant='link' disabled={fromLanguage === AUTO_LANGUAGE} onClick={interchangeLanguages} className="text-light">
+            </div>
+          </div>
+          <div className="flex items-center justify-center lg:col-span-1">
+            <button
+              onClick={interchangeLanguages}
+              disabled={fromLanguage === AUTO_LANGUAGE}
+              className="text-light"
+            >
               <ArrowsIcon />
-            </Button>
-          </Col>
-          <Col>
-            <Stack gap={2}>
-              <LanguageSelector
-                type={SectionType.To}
-                value={toLanguage}
-                onChange={setToLanguage}
-              />
-              <TextArea
-                loading={loading}
+            </button>
+          </div>
+          <div>
+            <LanguageSelector
+              type={SectionType.To}
+              value={toLanguage}
+              onChange={setToLanguage}
+            />
+            <div className='mt-3'>
+
+              <TextAreaComponent
                 type={SectionType.To}
                 value={result}
                 onChange={setResult}
-                className="form-control bg-light text-dark border-0 rounded"
               />
-            </Stack>
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col className="text-center">
-            <TranslationSelector onSelect={setSelectedEndpoint} />
-            <Button variant="primary" onClick={translateText}>Translate</Button>
-          </Col>
-        </Row>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 text-center">
+          <TranslationSelector onSelect={setSelectedEndpoint} />
+          <div className='mt-6 text-center'>
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={translateText}
+            >
+              Translate
+            </button>
+          </div>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }
 
