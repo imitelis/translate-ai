@@ -8,6 +8,7 @@ import { TextAreaComponent } from '../../components/TextArea';
 import TranslationSelector from "../../components/TranslateSelector";
 import axios from 'axios';
 
+
 function InputTranslate() {
   const {
     fromLanguage,
