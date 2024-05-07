@@ -1,7 +1,11 @@
 {
   "welcome_message": "Welcome to Translate AI",
   "translate_ai": "Translate AI",
+  
+  "loading": "Loading...",
+  
   "about": "About",
+  "about_description": "Translate AI is a text translation tool designed to deliver clear and accurate answers. Developed as the final project of the VelezReyes+ Ver+ Tech Fellowship program, our team is proud to present this useful tool. Do you need to translate important texts, know the translation of a phrase or message? Translate AI is here to help you. Explore our site and discover how to make communication in different languages more accessible and efficient. Created by David Saavedra, Santiago Ocampo, Juan E Rozo",
 
   "error_not_found": "Error page not found",
   "sorry_not_found": "Sorry but the page that you are looking for doesn't exists"

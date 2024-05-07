@@ -1,3 +1,4 @@
+import os
 import re
 import unicodedata
 from io import open
@@ -7,8 +8,8 @@ class Lang:
         self.name = name
         self.word2index = {}
         self.word2count = {}
-        self.index2word = {0: "SOS", 1: "EOS"}
-        self.n_words = 2  # Count SOS and EOS
+        self.index2word = {0: "SOS", 1: "EOS", 2: "UNK"}
+        self.n_words = 3 # Count SOS and EOS
 
     def addSentence(self, sentence):
         for word in sentence.split(' '):
@@ -39,10 +40,11 @@ def normalizeString(s):
     return s.strip()
 
 def readLangs(lang1, lang2, reverse=False):
-    # print("Reading lines...")
+    print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('./%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    lines = open(os.path.join(current_dir, f"./data/%s-%s.txt") % (lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize

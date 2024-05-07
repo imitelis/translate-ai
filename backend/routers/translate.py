@@ -2,7 +2,8 @@ from fastapi import APIRouter
 import re
 from services import Deeplia
 from services import GoogleGenia
-from services.json_translator import translate
+from services.json_translator import translate as json_translate
+from services.pytorch_translator import translate as pytorch_translate
 from services import extract_score
 from typing import List
 from pydantic import BaseModel
@@ -23,11 +24,25 @@ class Params(BaseModel):
 
 # Basic POST translates
 @router.post("/translate/json")
-async def translate_text_json(text: str, sl: str = 'es', tl: str = 'en'):
+async def translate_text_json(params: Params):
     """
     Translate text from one language to another
     """
-    response = translate(input_sentence=text, source_lang=sl, target_lang=tl)
+    text = params.text
+    sl = params.sl
+    tl = params.tl
+    response = json_translate(input_sentence=text, source_lang=sl, target_lang=tl)
+    return response
+
+@router.post("/translate/pytorch")
+async def translate_text_pytorch(params: Params):
+    """
+    Translate text from one language to another
+    """
+    text = params.text
+    sl = params.sl
+    tl = params.tl
+    response = pytorch_translate(input_sentence=text, source_lang=sl, target_lang=tl)
     return response
 
 @router.post("/translate/deepl")

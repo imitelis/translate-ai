@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir --upgrade pip
 
 # Install project dependencies
 RUN pip install uvicorn
-RUN pip install -r requirements.txt
+RUN pip install -r reqs.txt
 RUN pip install torch==2.2.2 --no-cache-dir --index-url https://download.pytorch.org/whl/cpu
 RUN [ "python3", "-c", "import nltk; nltk.download('vader_lexicon', download_dir='/usr/local/share/nltk_data')" ]
 

@@ -1,9 +1,0 @@
-fastapi>=0.110.1
-uvicorn>=0.29.0
-pydantic>=2.7.0
-deepl>=1.18.0
-python-dotenv>=1.0.1
-numpy>=1.26.4
-nltk>=3.8.1
-fuzzywuzzy>=0.18.0
-google-generativeai>=0.5.2

@@ -1,4 +1,5 @@
 services:
+
   api:
     build:
       context: ./backend
@@ -9,13 +10,19 @@ services:
     ports:
       - '8000:8000'
     restart: "no"
+    volumes:
+      - ./api:/backend/
   web:
     build:
       context: ./frontend
       target: web
     container_name: react-application
+    env_file:
+        - ./frontend/.env
     depends_on:
       - api
     ports:
       - '9000:9000'
     restart: "no"
+    volumes:
+      - ./web:/backend/

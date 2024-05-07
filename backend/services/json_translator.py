@@ -67,5 +67,3 @@ def translate(input_sentence, source_lang, target_lang):
     translated_sentence = re.sub(r"\s+", " ", translated_sentence).strip()
 
     return translated_sentence
-
-print(translate('el y ella pero el perro consume alimentos en Akiwi', 'es', 'en'))

@@ -96,8 +96,8 @@ decoder.eval()
 evaluateRandomly(encoder, decoder)
 
 # Saving
-encoder_path = f'../models/{base_lang}-to-{target_lang}-encoder.pth'
-decoder_path = f'../models/{base_lang}-to-{target_lang}-decoder.pth'
+encoder_path = f'{base_lang}-to-{target_lang}-encoder2.pth'
+decoder_path = f'{base_lang}-to-{target_lang}-decoder2.pth' # ../models/
 
 # Save the state dictionaries of the encoder and decoder
 torch.save(encoder.state_dict(), encoder_path)

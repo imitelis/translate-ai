@@ -7,7 +7,7 @@ MAX_LENGTH = 30
 hidden_size = 128
 batch_size = 32
 
-base_lang, target_lang = 'eng', 'esp'
+base_lang, target_lang = 'esp', 'eng'
 # 'esp', 'eng' # 'eng', 'esp'
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

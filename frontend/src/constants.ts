@@ -14,6 +14,6 @@ export const homologateLanguageByPlatform = {
         }
     },
     geminia: {}
-} as any;
+} as never;
 
 

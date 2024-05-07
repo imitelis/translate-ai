@@ -8,8 +8,10 @@ import NavigationBar from "./components/NavigationBar";
 // language
 import { detectLanguage } from "./i18n";
 
+const About = lazy(() => import("./views/About"));
 const NotFound = lazy(() => import("./views/NotFound"));
 const Translate = lazy(() => import("./views/Translate"));
+import Loading from './views/Loading'
 
 function App() {
   const [language, setLanguage] = useState("en");
@@ -31,7 +33,7 @@ function App() {
             key={`translate-${lang}`}
             path={`/${lang}?`}
             element={
-              <Suspense fallback={<>loading...</>}>
+              <Suspense fallback={<Loading/>}>
                 <Translate />
               </Suspense>
             }
@@ -40,8 +42,17 @@ function App() {
             key={`translate-${lang}`}
             path={`translate/${lang}?`}
             element={
-              <Suspense fallback={<>loading...</>}>
+              <Suspense fallback={<Loading/>}>
                 <Translate />
+              </Suspense>
+            }
+          />,
+          <Route
+            key={`about-${lang}`}
+            path={`/about/${lang}?`}
+            element={
+              <Suspense fallback={<Loading/>}>
+                <About />
               </Suspense>
             }
           />,
@@ -49,7 +60,7 @@ function App() {
             key={`notfound-${lang}`}
             path={`/*`}
             element={
-              <Suspense fallback={<>loading...</>}>
+              <Suspense fallback={<Loading/>}>
                 <NotFound />
               </Suspense>
             }

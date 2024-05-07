@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from settings import SOS_token, MAX_LENGTH, device
+from .settings import SOS_token, MAX_LENGTH, device
 
 class BahdanauAttention(nn.Module):
     def __init__(self, hidden_size):

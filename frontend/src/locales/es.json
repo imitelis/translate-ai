@@ -1,7 +1,11 @@
 {
   "welcome_message": "Bienvenido a Traduce IA",
   "translate_ai": "Traduce IA",
+  
+  "loading": "Cargando...",
+  
   "about": "Acerca de",
+  "about_description": "Traduce IA es una herramienta de traducción de texto diseñada para ofrecer respuestas claras y precisas. Desarrollada como proyecto final del programa Ver+ Tech Fellowship de VelezReyes+, nuestro equipo se enorgullece de presentar esta útil herramienta. ¿Necesitas traducir textos importantes, conocer la traducción de una frase o mensaje? Translate IA está aquí para ayudarte. Explora nuestro sitio y descubre cómo hacer que la comunicación en diferentes idiomas sea más accesible y eficiente. Creada por David Saavedra, Santiago Ocampo, Juan E Rozo",
 
   "error_not_found": "Error página no encontrada",
   "sorry_not_found": "Lo sentimos pero la página que esta buscando no esta existe"

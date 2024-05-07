@@ -27,7 +27,7 @@ function InputTranslate() {
   const translateText = async () => {
     try {
       let url;
-      let queryParams = `?text=${encodeURIComponent(fromText)}&sl=${encodeURIComponent(fromLanguage)}&tl=${encodeURIComponent(toLanguage)}`;
+      const queryParams = `?text=${encodeURIComponent(fromText)}&sl=${encodeURIComponent(fromLanguage)}&tl=${encodeURIComponent(toLanguage)}`;
       let requestBody: { text: string, sl?: string, tl?: string } = {
         text: ''
       }; // Inicializa requestBody como un objeto vacío

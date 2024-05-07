@@ -14,19 +14,19 @@ decoder_path = f'../models/{base_lang}-to-{target_lang}-decoder.pth'
 
 # Initialize input language, output language and data loader
 
-# For eng-to-esp translator
+# For esp-to-eng translator
 input_lang, output_lang, train_dataloader = get_dataloader(batch_size)
 
-# For esp-to-eng translator
+# For eng-to-esp translator
 # output_lang, input_lang, train_dataloader = get_dataloader(batch_size)
 
 # Initialize new encoder and decoder instances
 
-# For eng-to-esp translator
+# For esp-to-eng translator
 encoder = EncoderRNN(input_lang.n_words, hidden_size).to(device)
 decoder = AttnDecoderRNN(hidden_size, output_lang.n_words).to(device)
 
-# For esp-to-eng translator
+# For eng-to-esp translator
 # encoder = EncoderRNN(output_lang.n_words, hidden_size).to(device)
 # decoder = AttnDecoderRNN(hidden_size, input_lang.n_words).to(device)
 
@@ -70,4 +70,4 @@ def translate(input_sentence):
     # return ' '.join(output_words)
     return translated_sentence
 
-print(translate("My name is David."))
+# print(translate("el caballo se alza sobre el mar"))
