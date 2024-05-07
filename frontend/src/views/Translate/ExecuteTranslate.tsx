@@ -6,6 +6,8 @@ import { LanguageSelector } from '../../components/LanguageSelector';
 import { SectionType } from '../../types.d';
 import { TextAreaComponent } from '../../components/TextArea';
 import TranslationSelector from "../../components/TranslateSelector";
+import axios from 'axios';
+
 
 function InputTranslate() {
   const {
@@ -25,9 +27,11 @@ function InputTranslate() {
   const translateText = async () => {
     try {
       let url;
-      let requestBody;
       let queryParams = `?text=${encodeURIComponent(fromText)}&sl=${encodeURIComponent(fromLanguage)}&tl=${encodeURIComponent(toLanguage)}`;
-
+      let requestBody: { text: string, sl?: string, tl?: string } = {
+        text: ''
+      }; // Inicializa requestBody como un objeto vacío
+  
       switch (selectedEndpoint) {
         case "json":
           url = `http://localhost:8000/api/translate/json${queryParams}`;
@@ -51,24 +55,16 @@ function InputTranslate() {
         default:
           throw new Error("Invalid endpoint");
       }
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      const responseData = await response.json();
-      setResult(responseData);
+  
+      const response = await axios.post(url, requestBody);
+  
+      // Actualiza el resultado con la traducción recibida
+      setResult(response.data);
     } catch (error) {
       console.error('Error:', error);
     }
   }
-
-
-
+  
 
   function homologateLanguage(platform: 'json' | 'deepl' | 'geminia', direction: 'tl' | 'sl', language: 'en' | 'es') {
 
