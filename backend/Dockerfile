@@ -1,5 +1,5 @@
 # Use the official Python image as a base
-FROM python:3.10 AS base
+FROM python:3.9-slim AS base
 
 # Create workdir
 RUN mkdir -p /backend
@@ -10,7 +10,7 @@ WORKDIR /backend
 # Copy the current directory contents into the container at /code
 COPY . /backend
 
-ENV VIRTUAL_ENV=/code/venv
+ENV VIRTUAL_ENV=/backend/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -19,8 +19,10 @@ RUN pip install --no-cache-dir --upgrade pip
 
 # Install project dependencies
 RUN pip install uvicorn
-RUN pip install -r reqs.txt
+RUN pip install -r requirements.txt
+RUN pip install torch==2.2.2 --no-cache-dir --index-url https://download.pytorch.org/whl/cpu
 RUN [ "python3", "-c", "import nltk; nltk.download('vader_lexicon', download_dir='/usr/local/share/nltk_data')" ]
+
 # Expose a port
 EXPOSE 8000
 
