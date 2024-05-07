@@ -2,3 +2,5 @@
 .env
 /services/pytorch_data/
 /services/pytorch_data/pytorch_translator.py
+/test
+/venv
