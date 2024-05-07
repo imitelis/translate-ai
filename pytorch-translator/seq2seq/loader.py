@@ -9,15 +9,26 @@ from data_evaluator import evaluate
 from settings import hidden_size, batch_size, device, base_lang, target_lang
 
 # Encoder and decoder saved paths
-encoder_path = f'{base_lang}-to-{target_lang}-encoder.pth'
-decoder_path = f'{base_lang}-to-{target_lang}-decoder.pth'
+encoder_path = f'../models/{base_lang}-to-{target_lang}-encoder.pth'
+decoder_path = f'../models/{base_lang}-to-{target_lang}-decoder.pth'
 
 # Initialize input language, output language and data loader
+
+# For eng-to-esp translator
 input_lang, output_lang, train_dataloader = get_dataloader(batch_size)
 
+# For esp-to-eng translator
+# output_lang, input_lang, train_dataloader = get_dataloader(batch_size)
+
 # Initialize new encoder and decoder instances
+
+# For eng-to-esp translator
 encoder = EncoderRNN(input_lang.n_words, hidden_size).to(device)
 decoder = AttnDecoderRNN(hidden_size, output_lang.n_words).to(device)
+
+# For esp-to-eng translator
+# encoder = EncoderRNN(output_lang.n_words, hidden_size).to(device)
+# decoder = AttnDecoderRNN(hidden_size, input_lang.n_words).to(device)
 
 # Load the saved state dictionaries into the models
 encoder.load_state_dict(torch.load(encoder_path))
@@ -55,6 +66,8 @@ def translate(input_sentence):
         if i < len(chunks) - 1:
             translated_sentence += input_sentence[len(chunk)]
     
+    # output_words, attentions = evaluate(encoder, decoder, input_sentence, input_lang, output_lang)
+    # return ' '.join(output_words)
     return translated_sentence
 
-print(translate("si suspendes este examen, tendrás que repetir curso."))
+print(translate("My name is David."))

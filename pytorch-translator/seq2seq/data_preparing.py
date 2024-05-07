@@ -11,10 +11,9 @@ input_lang, output_lang, pairs = prepareData(base_lang, target_lang, True)
 
 # Preparing training data
 def indexesFromSentence(lang, sentence):
+    unknown_index = lang.word2index.get('UNK', UNK_token)
+    return [lang.word2index.get(word, unknown_index) for word in sentence.split(' ')]
     # return [lang.word2index[word] for word in sentence.split(' ')]
-    # return 0
-    # return [lang.word2index.get(word, UNK_token) for word in sentence.split(' ')]
-    return [lang.word2index[word] for word in sentence.split(' ') if word in lang.word2index]
 
 def tensorFromSentence(lang, sentence):
     indexes = indexesFromSentence(lang, sentence)

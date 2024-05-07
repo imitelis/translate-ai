@@ -5,14 +5,16 @@
   *  Activate the virtual environment by executing `source venv/bin/activate`
   *  Installing all reqs from `reqs.txt` using `pip install -r reqs.txt`
   *  Then move to `seq2seq` folder, run `python3 trainer.py` for training the NN by yourself
-  *  This is a very computationally expensive task, with taking around 30min to my NVIDIA GTX1050TI
+  *  This is a very computationally expensive task, with taking around 30min to my NVIDIA GTX1050TI (using CUDA)
   *  But it also depends on your `settings.py`. My recommended non-trivial setup was the same as the tutorial:
-  `SOS_token = 0`, `EOS_token = 1`, `MAX_LENGTH = 30`, `hidden_size = 128`, `batch_size = 64`
+  `SOS_token = 0`, `EOS_token = 1`, `hidden_size = 128`, `batch_size = 32` but with `MAX_LENGTH = 30` for longer sentences
   *  You can override those settings and run those by your own, particularly your own languages with datasets in data
+  *  However, I had to do some modifications on the `evaluate` function to work even if there are words that are not included in the lang vocab (all proper names)
+  *  So I also added a new token `UNK_token = 2` for handling those words and some helper functions for placing those words again in the sentence
 
 ## Loader
-  *  After the train.py has successfully been executed, it should have saved the models at the same folder
-  *  The remaining `eng-to-fra-encoder.pth` and `eng-to-fra-decoder.pth` attest the results of this task
+  *  After the train.py has successfully been executed, it should have saved them at `models/` folder
+  *  The remaining `esp-to-eng-encoder.pth` and `esp-to-eng-decoder.pth` attest the results of this task
   *  But now we want to reload them again so we can continue using them
 
 ## Docs

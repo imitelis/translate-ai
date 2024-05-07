@@ -76,10 +76,18 @@ def train(train_dataloader, encoder, decoder, n_epochs, learning_rate=0.001,
     showPlot(plot_losses)
 
 # Training and evalution
+
+# For eng-to-esp translator
 input_lang, output_lang, train_dataloader = get_dataloader(batch_size)
 
 encoder = EncoderRNN(input_lang.n_words, hidden_size).to(device)
 decoder = AttnDecoderRNN(hidden_size, output_lang.n_words).to(device)
+
+# For esp-to-eng translator
+# output_lang, input_lang, train_dataloader = get_dataloader(batch_size)
+
+# encoder = EncoderRNN(output_lang.n_words, hidden_size).to(device)
+# decoder = AttnDecoderRNN(hidden_size, input_lang.n_words).to(device)
 
 train(train_dataloader, encoder, decoder, 80, print_every=5, plot_every=5)
 
@@ -88,8 +96,8 @@ decoder.eval()
 evaluateRandomly(encoder, decoder)
 
 # Saving
-encoder_path = f'{base_lang}-to-{target_lang}-encoder.pth'
-decoder_path = f'{base_lang}-to-{target_lang}-decoder.pth'
+encoder_path = f'../models/{base_lang}-to-{target_lang}-encoder.pth'
+decoder_path = f'../models/{base_lang}-to-{target_lang}-decoder.pth'
 
 # Save the state dictionaries of the encoder and decoder
 torch.save(encoder.state_dict(), encoder_path)

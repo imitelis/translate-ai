@@ -24,3 +24,16 @@ def showPlot(points):
     loc = ticker.MultipleLocator(base=0.2)
     ax.yaxis.set_major_locator(loc)
     plt.plot(points)
+
+def find_indexes_of_value(arr, value):
+    return [i for i, x in enumerate(arr) if x == value]
+
+def save_words_at_indexes(sentence, indexes):
+    words = sentence.split()
+    selected_words = [words[i] for i in indexes if i < len(words)]
+    return selected_words
+
+def insert_words(sentence, words, indexes):
+    for word, idx in zip(words, indexes):
+        sentence.insert(idx, word)
+    return sentence
