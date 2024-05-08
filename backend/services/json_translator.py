@@ -7,7 +7,7 @@ CURRENT_PATH = os.getcwd()
 
 def translate(input_sentence, source_lang, target_lang):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(current_dir, f"json-data/{source_lang}-{target_lang}.json")
+    json_path = os.path.join(current_dir, f"json_data/{source_lang}-{target_lang}.json")
     # Load the JSON dictionary
     with open(json_path) as json_file:
         translations = json.load(json_file)

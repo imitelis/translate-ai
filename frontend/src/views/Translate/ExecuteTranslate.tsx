@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useStore } from '../../hooks/useStore';
-import { AUTO_LANGUAGE, homologateLanguageByPlatform } from '../../constants';
-import { ArrowsIcon } from '../../components/Icons';
-import { LanguageSelector } from '../../components/LanguageSelector';
-import { SectionType } from '../../types.d';
-import { TextAreaComponent } from '../../components/TextArea';
+import { useState } from "react";
+import { useStore } from "../../hooks/useStore";
+import { AUTO_LANGUAGE, homologateLanguageByPlatform } from "../../constants";
+import { ArrowsIcon } from "../../components/Icons";
+import { LanguageSelector } from "../../components/LanguageSelector";
+import { SectionType } from "../../types";
+import { TextAreaComponent } from "../../components/TextArea";
 import TranslationSelector from "../../components/TranslateSelector";
-import axios from 'axios';
-
+import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 function InputTranslate() {
   const {
@@ -19,63 +19,122 @@ function InputTranslate() {
     fromText,
     result,
     setFromText,
-    setResult
+    setResult,
   } = useStore();
 
   const [selectedEndpoint, setSelectedEndpoint] = useState("json");
+  const [texts, setTexts] = useState<string[]>([]);
+  const [sentiment, setSentiment] = useState("");
+  const { t } = useTranslation();
 
   const translateText = async () => {
     try {
       let url;
-      const queryParams = `?text=${encodeURIComponent(fromText)}&sl=${encodeURIComponent(fromLanguage)}&tl=${encodeURIComponent(toLanguage)}`;
-      let requestBody: { text: string, sl?: string, tl?: string } = {
-        text: ''
+      // const queryParams = `?text=${encodeURIComponent(fromText)}&sl=${encodeURIComponent(fromLanguage)}&tl=${encodeURIComponent(toLanguage)}`;
+      let requestBody: { text: string; sl?: string; tl?: string } = {
+        text: "",
       }; // Inicializa requestBody como un objeto vacío
-  
+
+      setTexts((prevTexts) => {
+        if (
+          prevTexts.length > 0 &&
+          prevTexts[prevTexts.length - 1] === fromText
+        ) {
+          return prevTexts;
+        } else {
+          return [...prevTexts, fromText];
+        }
+      });
+
       switch (selectedEndpoint) {
         case "json":
-          url = `http://localhost:8000/api/translate/json${queryParams}`;
-          break;
-        case "deepl":
-          url = 'http://localhost:8000/api/translate/deepl';
+          url = `http://localhost:8000/api/translate/json`;
           requestBody = {
             text: fromText,
             sl: fromLanguage,
-            tl: homologateLanguage(selectedEndpoint, 'tl', toLanguage)
+            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
+          };
+          break;
+        case "pytorch":
+          url = "http://localhost:8000/api/translate/pytorch";
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
+          };
+          break;
+        case "deepl":
+          url = "http://localhost:8000/api/translate/deepl";
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
           };
           break;
         case "geminia":
-          url = 'http://localhost:8000/api/translate/geminia';
+          url = "http://localhost:8000/api/translate/geminia";
           requestBody = {
             text: fromText,
             sl: fromLanguage,
-            tl: homologateLanguage(selectedEndpoint, 'tl', toLanguage)
+            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
           };
           break;
         default:
           throw new Error("Invalid endpoint");
       }
-  
+
       const response = await axios.post(url, requestBody);
-  
+
       // Actualiza el resultado con la traducción recibida
       setResult(response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
-  }
-  
+  };
 
-  function homologateLanguage(platform: 'json' | 'deepl' | 'geminia', direction: 'tl' | 'sl', language: 'en' | 'es') {
+  const sentimentText = async () => {
+    try {
+      const url = `http://localhost:8000/api/sentiment`;
+      const requestBody = {
+        translations: [...texts],
+      };
 
-    if (homologateLanguageByPlatform[platform] && homologateLanguageByPlatform[platform][direction] && homologateLanguageByPlatform[platform][direction][language]) {
-      return homologateLanguageByPlatform[platform][direction][language] || language;
+      const response = await axios.post(url, requestBody);
 
+      console.log("requests", texts);
+
+      setSentiment(response.data);
+    } catch (error) {
+      console.error("Error:", error);
     }
-    else {
-      return language
-    }
+  };
 
+  const translatedSentiment = () => {
+    if (sentiment == "neutral") {
+      return t("neutral");
+    } else if (sentiment == "mostly positive") {
+      return t("positive");
+    } else if (sentiment == "mostly negative") {
+      return t("negative");
+    }
+  };
+
+  function homologateLanguage(
+    platform: "json" | "pytorch" | "deepl" | "geminia",
+    direction: "tl" | "sl",
+    language: "en" | "es",
+  ) {
+    if (
+      homologateLanguageByPlatform[platform] &&
+      homologateLanguageByPlatform[platform][direction] &&
+      homologateLanguageByPlatform[platform][direction][language]
+    ) {
+      return (
+        homologateLanguageByPlatform[platform][direction][language] || language
+      );
+    } else {
+      return language;
+    }
   }
 
   return (
@@ -89,7 +148,7 @@ function InputTranslate() {
               value={fromLanguage}
               onChange={setFromLanguage}
             />
-            <div className='mt-3'>
+            <div className="mt-3">
               <TextAreaComponent
                 type={SectionType.From}
                 value={fromText}
@@ -101,7 +160,7 @@ function InputTranslate() {
             <button
               onClick={interchangeLanguages}
               disabled={fromLanguage === AUTO_LANGUAGE}
-              className="text-light"
+              className="text-white bg-indigo-400 py-2 px-4 rounded-md"
             >
               <ArrowsIcon />
             </button>
@@ -112,8 +171,7 @@ function InputTranslate() {
               value={toLanguage}
               onChange={setToLanguage}
             />
-            <div className='mt-3'>
-
+            <div className="mt-3">
               <TextAreaComponent
                 type={SectionType.To}
                 value={result}
@@ -124,13 +182,34 @@ function InputTranslate() {
         </div>
         <div className="mt-6 text-center">
           <TranslationSelector onSelect={setSelectedEndpoint} />
-          <div className='mt-6 text-center'>
+          <div className="mt-6 text-center">
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={translateText}
             >
-              Translate
+              {t("translate")}
             </button>
+          </div>
+          <div className="mt-6 text-center">
+            <div className="text-white text-lg my-2">
+              {t("sentiment")}:{" "}
+              {sentiment === "" ? (
+                <>{t("none_yet")}</>
+              ) : (
+                <>{translatedSentiment()}</>
+              )}
+            </div>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={sentimentText}
+            >
+              {t("sentiment")}
+            </button>
+            <ul className="text-white text-lg mt-2">
+              {texts.map((text, index) => (
+                <li key={index}>{text}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

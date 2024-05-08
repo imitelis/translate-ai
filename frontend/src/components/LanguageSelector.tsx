@@ -1,12 +1,19 @@
 import { SUPPORTED_LANGUAGES, AUTO_LANGUAGE } from "../constants";
-import { type FromLanguage, type Language, SectionType } from "../types.d";
+import { type FromLanguage, type Language, SectionType } from "../types";
 
 type Props =
-  | { type: SectionType.From, value: FromLanguage, onChange: (Language: FromLanguage) => void }
-  | { type: SectionType.To, value: Language, onChange: (Language: Language) => void };
+  | {
+      type: SectionType.From;
+      value: FromLanguage;
+      onChange: (Language: FromLanguage) => void;
+    }
+  | {
+      type: SectionType.To;
+      value: Language;
+      onChange: (Language: Language) => void;
+    };
 
 export const LanguageSelector = ({ onChange, type, value }: Props) => {
-
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value as Language);
   };

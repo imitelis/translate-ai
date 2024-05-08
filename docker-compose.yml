@@ -4,7 +4,7 @@ services:
     build:
       context: ./backend
       target: base
-    container_name: fastapi-application
+    container_name: fastapi-app
     env_file:
         - ./backend/.env
     ports:
@@ -16,7 +16,7 @@ services:
     build:
       context: ./frontend
       target: web
-    container_name: react-application
+    container_name: react-app
     env_file:
         - ./frontend/.env
     depends_on:

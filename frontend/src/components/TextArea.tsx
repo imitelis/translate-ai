@@ -1,6 +1,7 @@
 import { Textarea } from "@material-tailwind/react";
-import { SectionType } from '../types.d';
-import { useState } from 'react';
+import { SectionType } from "../types";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   type: SectionType;
@@ -8,13 +9,9 @@ interface Props {
   value: string;
 }
 
-const getPlaceholder = ({ type }: { type: SectionType }) => {
-  if (type === SectionType.From) return 'Introduzca el texto';
-  return 'Traducción';
-};
-
 export const TextAreaComponent = ({ type, value, onChange }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
+  const { t } = useTranslation();
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -28,17 +25,25 @@ export const TextAreaComponent = ({ type, value, onChange }: Props) => {
     navigator.clipboard.writeText(value);
   };
 
+  const getPlaceholder = ({ type }: { type: SectionType }) => {
+    if (type === SectionType.From) return t("introduce_text");
+    return t("translation");
+  };
+
   return (
     <div className="relative">
       <Textarea
         autoFocus={type === SectionType.From}
         disabled={undefined}
         placeholder={getPlaceholder({ type })}
-        className={`border border-gray-300 rounded-lg p-3 ${isFocused ? 'border-blue-500' : 'focus:border-blue-500'} ${isFocused ? 'ring-1 ring-blue-500' : ''} text-white w-full h-40 `}
+        className={`border border-gray-300 rounded-lg p-3 ${isFocused ? "border-blue-500" : "focus:border-blue-500"} ${isFocused ? "ring-1 ring-blue-500" : ""} text-white w-full h-40 `}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={handleFocus}
-        onBlur={handleBlur} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      />
+        onBlur={handleBlur}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+      />
 
       {type === SectionType.To && (
         <button
