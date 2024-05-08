@@ -22,7 +22,6 @@ class GoogleGenia:
             response = self.model.generate_content('Translate the following text: "{0}" into the following language {1}.'
                                                    'Use the formal language and avoid using slang.'
                                                    .format(text, target_language))
+            return response.text
         except Exception as e:
-            return str(e)
-
-        return response.text
+            return "An error occurred. Please try again."
