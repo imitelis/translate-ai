@@ -14,16 +14,6 @@ function TranslationSelector({ onSelect }: TranslationSelectorProps) {
   return (
     <div className="flex justify-center gap-2">
       <Button
-        color="purple"
-        onClick={() => handleSelect("json")}
-        ripple={true}
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-      >
-        JSON
-      </Button>
-      <Button
         color="orange"
         onClick={() => handleSelect("pytorch")}
         ripple={true}

@@ -21,18 +21,20 @@ class Deeplia:
         """
         try:
             response = self.translator.translate_text(text, source_lang=source_language, target_lang=target_language)
-        except Exception as e:
-            return str(e)
-        return response.text
+            return response.text
 
-    def get_languages(self):
-        """
-        Get a list of supported languages.
-        """
-        try:
-            source_languages = [language.name for language in self.translator.get_source_languages()]
-            target_languages = [language.name for language in self.translator.get_target_languages()]
         except Exception as e:
-            return str(e)
+            return "An error occurred. Please try again."
 
-        return {"source_languages": source_languages, "target_languages": target_languages}
+
+def get_languages(self):
+    """
+    Get a list of supported languages.
+    """
+    try:
+        source_languages = [language.name for language in self.translator.get_source_languages()]
+        target_languages = [language.name for language in self.translator.get_target_languages()]
+    except Exception as e:
+        return str(e)
+
+    return {"source_languages": source_languages, "target_languages": target_languages}

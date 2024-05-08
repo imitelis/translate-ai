@@ -47,14 +47,6 @@ function InputTranslate() {
       });
 
       switch (selectedEndpoint) {
-        case "json":
-          url = `http://localhost:8000/api/translate/json`;
-          requestBody = {
-            text: fromText,
-            sl: fromLanguage,
-            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
-          };
-          break;
         case "pytorch":
           url = "http://localhost:8000/api/translate/pytorch";
           requestBody = {

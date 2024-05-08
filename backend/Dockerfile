@@ -18,13 +18,12 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install --no-cache-dir --upgrade pip
 
 # Install project dependencies
-RUN pip install uvicorn
 RUN pip install -r reqs.txt
-RUN pip install torch==2.2.2 --no-cache-dir --index-url https://download.pytorch.org/whl/cpu
-RUN [ "python3", "-c", "import nltk; nltk.download('vader_lexicon', download_dir='/usr/local/share/nltk_data')" ]
+RUN pip install uvicorn>=0.29.0
+RUN python3 -c "import nltk; nltk.download('vader_lexicon', download_dir='/usr/local/share/nltk_data')"
 
 # Expose a port
 EXPOSE 8000
 
 # Run our FastAPI server using uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000"]
