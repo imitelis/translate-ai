@@ -182,12 +182,18 @@ function InputTranslate() {
         </div>
         <div className="mt-6 text-center">
           <TranslationSelector onSelect={setSelectedEndpoint} />
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-x-4">
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={translateText}
             >
               {t("translate")}
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={sentimentText}
+            >
+              {t("sentiment")}
             </button>
           </div>
           <div className="mt-6 text-center">
@@ -199,13 +205,9 @@ function InputTranslate() {
                 <>{translatedSentiment()}</>
               )}
             </div>
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={sentimentText}
-            >
-              {t("sentiment")}
-            </button>
+            
             <ul className="text-white text-lg mt-2">
+              <li>{t("translations")}:</li>
               {texts.map((text, index) => (
                 <li key={index}>{text}</li>
               ))}
