@@ -47,6 +47,14 @@ function InputTranslate() {
       });
 
       switch (selectedEndpoint) {
+        case "json":
+          url = `http://localhost:8000/api/translate/json`;
+          requestBody = {
+            text: fromText,
+            sl: fromLanguage,
+            tl: homologateLanguage(selectedEndpoint, "tl", toLanguage),
+          };
+          break;
         case "pytorch":
           url = "http://localhost:8000/api/translate/pytorch";
           requestBody = {
@@ -92,8 +100,8 @@ function InputTranslate() {
       };
 
       const response = await axios.post(url, requestBody);
-
-      console.log("requests", texts);
+      // console.log("requests", texts);
+      console.log("Response:", response.data);
 
       setSentiment(response.data);
     } catch (error) {

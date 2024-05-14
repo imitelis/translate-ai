@@ -3,6 +3,7 @@ import re
 from services import Deeplia
 from services import GoogleGenia
 from services.json_translator import translate as json_translate
+from services.pytorch_translator import translate as pytorch_translate
 from services import extract_score
 from typing import List
 from pydantic import BaseModel
@@ -33,7 +34,6 @@ async def translate_text_json(params: Params):
     response = json_translate(input_sentence=text, source_lang=sl, target_lang=tl)
     return response
 
-
 @router.post("/translate/pytorch")
 async def translate_text_pytorch(params: Params):
     """
@@ -42,9 +42,8 @@ async def translate_text_pytorch(params: Params):
     text = params.text
     sl = params.sl
     tl = params.tl
-    response = deepl_service.translate_text(text, source_language=sl, target_language=tl)
+    response = pytorch_translate(input_sentence=text, source_lang=sl, target_lang=tl)
     return response
-
 
 @router.post("/translate/deepl")
 async def translate_text_deepl(params: Params):

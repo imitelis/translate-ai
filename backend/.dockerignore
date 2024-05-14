@@ -1,6 +1,6 @@
 .env.template
 .env
 /services/pytorch_data/
-/services/pytorch_translator.py
+/services/pytorch_data/pytorch_translator.py
 /test
 /venv

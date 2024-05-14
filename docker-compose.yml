@@ -1,4 +1,5 @@
 services:
+
   api:
     build:
       context: ./backend
@@ -8,7 +9,9 @@ services:
         - ./backend/.env
     ports:
       - '8000:8000'
-    restart: "always"
+    restart: "no"
+    volumes:
+      - ./api:/backend/
   web:
     build:
       context: ./frontend
@@ -20,3 +23,6 @@ services:
       - api
     ports:
       - '9000:9000'
+    restart: "no"
+    volumes:
+      - ./web:/backend/

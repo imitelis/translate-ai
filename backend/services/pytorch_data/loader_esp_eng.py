@@ -27,8 +27,8 @@ encoder = EncoderRNN(output_lang.n_words, hidden_size).to(device)
 decoder = AttnDecoderRNN(hidden_size, input_lang.n_words).to(device)
 
 # Load the saved state dictionaries into the models
-encoder.load_state_dict(torch.load(encoder_path))
-decoder.load_state_dict(torch.load(decoder_path))
+encoder.load_state_dict(torch.load(encoder_path, map_location=torch.device('cpu')))
+decoder.load_state_dict(torch.load(decoder_path, map_location=torch.device('cpu')))
 
 # Set models to evaluation mode
 encoder.eval()
